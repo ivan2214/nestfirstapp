@@ -1,38 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.entity';
-import { v4 as uuid } from 'uuid';
 import { UpdateUserDto } from './dto/User.dto';
+import { UserModel } from 'src/models/types';
 
 @Injectable()
 export class UsersService {
-  private Users: User[] = [
+  private Users: UserModel[] = [
     {
-      id: '1',
       username: 'Ivan test',
       password: 'ivan test',
       email: 'ivan@test.com',
+      age: 19,
+      firstName: 'ivan',
+      lastName: 'Bongiovanni',
     },
   ];
   getAllUsers() {
     return this.Users;
   }
-  createUser(username: string, email: string, password: string) {
-    const newUser = {
-      id: uuid(),
-      username,
-      email,
-      password,
-    };
+  createUser(createFields: UserModel) {
+    const newUser = { ...createFields };
 
     this.Users.push(newUser);
     return newUser;
   }
 
-  getUserById(id: string): User {
-    return this.Users.find((t) => t.id === id);
+  getUserById(id: string): UserModel {
+    return this.Users.find((t) => t?.id === id);
   }
 
-  updateUser(id: string, updateFiels: UpdateUserDto): User {
+  updateUser(id: string, updateFiels: UpdateUserDto): UserModel {
     const User = this.getUserById(id);
     const UserUpdate = Object.assign(User, updateFiels);
 
@@ -41,7 +37,7 @@ export class UsersService {
     return UserUpdate;
   }
 
-  deleteUser(id: string): User[] {
+  deleteUser(id: string): UserModel[] {
     const UsersFilter = this.Users.filter((t) => t.id !== id);
     this.Users = UsersFilter;
     return this.Users;

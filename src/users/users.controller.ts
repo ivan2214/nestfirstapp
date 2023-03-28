@@ -7,6 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { UserModel } from 'src/models/types';
 import { CreateUserDto, UpdateUserDto } from './dto/User.dto';
 import { UsersService } from './users.service';
 
@@ -19,21 +20,30 @@ export class UsersController {
   }
 
   @Post()
-  createUser(@Body() newUser: CreateUserDto) {
-    return this.UsersService.createUser(
-      newUser.password,
-      newUser.email,
-      newUser.username,
-    );
+  createUser(@Body() newUser: UserModel) {
+    const { username, password, email, lastName, age, firstName } = newUser;
+    const createFields = {
+      username,
+      password,
+      email,
+      lastName,
+      age,
+      firstName,
+    };
+    return this.UsersService.createUser(createFields);
   }
 
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() updateFieldsBody: UpdateUserDto) {
-    const { password, email, username } = updateFieldsBody;
+    const { password, email, username, firstName, lastName, age } =
+      updateFieldsBody;
     const updateFields = {
       password,
       email,
       username,
+      firstName,
+      lastName,
+      age,
     };
     return this.UsersService.updateUser(id, updateFields);
   }

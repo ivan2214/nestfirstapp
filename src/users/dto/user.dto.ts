@@ -4,6 +4,7 @@ import {
   MinLength,
   IsEmail,
   IsStrongPassword,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -11,16 +12,28 @@ export class CreateUserDto {
   @MinLength(5)
   @IsNotEmpty()
   username: string;
+
   @IsString()
   @MinLength(5)
   @IsNotEmpty()
   @IsStrongPassword()
   password: string;
+
   @IsString()
   @MinLength(5)
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  lastName: string;
+
+  @IsNumber()
+  @MinLength(3)
+  @IsNotEmpty()
+  age: string;
 }
 
 export class UpdateUserDto {
@@ -28,14 +41,31 @@ export class UpdateUserDto {
   @MinLength(5)
   @IsNotEmpty()
   username: string;
+
   @IsString()
   @MinLength(5)
   @IsNotEmpty()
   @IsStrongPassword()
   password: string;
+
   @IsString()
   @MinLength(5)
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  lastName: string;
+
+  @IsNumber()
+  @MinLength(3)
+  @IsNotEmpty()
+  age: string;
 }
