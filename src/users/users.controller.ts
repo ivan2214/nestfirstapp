@@ -3,52 +3,66 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import { UserModel } from 'src/models/types';
+
 import { CreateUserDto, UpdateUserDto } from './dto/User.dto';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
-@Controller('Users')
+@Controller('users')
 export class UsersController {
-  constructor(private UsersService: UsersService) {}
+  constructor(private usersService: UsersService) {}
+
   @Get()
-  getAllUsers() {
-    return this.UsersService.getAllUsers();
+  async getAllUsers(): Promise<User[]> {
+    return this.usersService.getUsers();
+  }
+  @Get('create-random')
+  async createRandomUsers(): Promise<User[] | void> {
+    return await this.usersService.createRandomUsers();
+  }
+
+  @Get(':id')
+  async getOne(@Param('id') id: string): Promise<User> {
+    const user = await this.usersService.getUser(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user;
   }
 
   @Post()
-  createUser(@Body() newUser: UserModel) {
-    const { username, password, email, lastName, age, firstName } = newUser;
-    const createFields = {
-      username,
-      password,
+  async createUser(
+    @Body() fieldCreateUser: CreateUserDto,
+  ): Promise<User | Error> {
+    const { userName, email, lastName, firstName, password, age } =
+      fieldCreateUser;
+    const newUser = {
+      userName,
       email,
       lastName,
-      age,
       firstName,
+      password,
+      age,
     };
-    return this.UsersService.createUser(createFields);
+    return this.usersService.createUser(newUser);
   }
 
   @Put(':id')
-  updateUser(@Param('id') id: string, @Body() updateFieldsBody: UpdateUserDto) {
-    const { password, email, username, firstName, lastName, age } =
-      updateFieldsBody;
-    const updateFields = {
-      password,
-      email,
-      username,
-      firstName,
-      lastName,
-      age,
-    };
-    return this.UsersService.updateUser(id, updateFields);
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateFields: UpdateUserDto,
+  ): Promise<User | Error> {
+    return await this.usersService.updateUser(id, updateFields);
   }
+
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
-    return this.UsersService.deleteUser(id);
+  async deleteUser(@Param('id') id: string) {
+    await this.usersService.remove(id);
+    return { message: `User with id ${id} deleted` };
   }
 }

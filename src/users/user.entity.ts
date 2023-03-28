@@ -1,9 +1,14 @@
+import { IsOptional } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
+  @IsOptional()
   id: string;
+
+  @Column()
+  userName: string;
 
   @Column()
   firstName: string;

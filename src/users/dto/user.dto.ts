@@ -11,36 +11,7 @@ export class CreateUserDto {
   @IsString()
   @MinLength(5)
   @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @MinLength(5)
-  @IsNotEmpty()
-  @IsStrongPassword()
-  password: string;
-
-  @IsString()
-  @MinLength(5)
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  @MinLength(3)
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsNumber()
-  @MinLength(3)
-  @IsNotEmpty()
-  age: string;
-}
-
-export class UpdateUserDto {
-  @IsString()
-  @MinLength(5)
-  @IsNotEmpty()
-  username: string;
+  userName: string;
 
   @IsString()
   @MinLength(5)
@@ -67,5 +38,38 @@ export class UpdateUserDto {
   @IsNumber()
   @MinLength(3)
   @IsNotEmpty()
-  age: string;
+  age: number;
+}
+
+export class UpdateUserDto {
+  @IsString()
+  @MinLength(5)
+  @IsNotEmpty()
+  userName: string;
+
+  @IsString()
+  @MinLength(5)
+  @IsNotEmpty()
+  @IsStrongPassword()
+  password: string;
+
+  @IsString()
+  @MinLength(5)
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  lastName: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  age: number;
 }
